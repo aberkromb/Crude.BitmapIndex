@@ -1,6 +1,6 @@
 using System;
 
-namespace Crude.BitmapIndex
+namespace Crude.BitmapIndex.Models
 {
     internal readonly struct BitmapAndSelector<T>
     {
