@@ -7,25 +7,25 @@ using static Crude.BitmapIndex.Helpers.PropertyNameHelper;
 
 namespace Crude.BitmapIndex.Implementations.Builder
 {
-    public class Builder<T>
+    public class BitmapBuilder<T>
     {
         private readonly Dictionary<string, Func<T, bool>> _keys;
         private Func<int, IBitmap> _bitMapFactory;
         private IEnumerable<T> _data;
 
-        public Builder()
+        public BitmapBuilder()
         {
             _keys = new Dictionary<string, Func<T, bool>>();
         }
 
-        public Builder<T> WithBitMap(Func<int, IBitmap> constructor)
+        public BitmapBuilder<T> WithBitMap(Func<int, IBitmap> constructor)
         {
             _bitMapFactory = constructor;
             return this;
         }
 
 
-        public Builder<T> IndexFor<TV>(T @object, Expression<Func<T, TV>> expression)
+        public BitmapBuilder<T> IndexFor<TV>(T @object, Expression<Func<T, TV>> expression)
         {
             var name = From(expression);
             var func = expression.Compile();
@@ -41,14 +41,14 @@ namespace Crude.BitmapIndex.Implementations.Builder
         }
 
 
-        public Builder<T> IndexFor(string key, Func<T, bool> selector)
+        public BitmapBuilder<T> IndexFor(string key, Func<T, bool> selector)
         {
             _keys.Add(key, selector);
             return this;
         }
 
 
-        public Builder<T> IndexForClass<TV, TSelected>(T @object,
+        public BitmapBuilder<T> IndexForClass<TV, TSelected>(T @object,
             Expression<Func<T, TV>> expressionClass,
             Expression<Func<TV, TSelected>> expressionProperty)
         {
@@ -73,7 +73,7 @@ namespace Crude.BitmapIndex.Implementations.Builder
         }
 
 
-        public Builder<T> IndexForArrayOfClass<TValue, TSelectValue>(T @object,
+        public BitmapBuilder<T> IndexForArrayOfClass<TValue, TSelectValue>(T @object,
             Expression<Func<T, IEnumerable<TValue>>> expression,
             Func<IEnumerable<TValue>, IEnumerable<TSelectValue>> valueSelector)
         {
@@ -96,7 +96,7 @@ namespace Crude.BitmapIndex.Implementations.Builder
         }
 
 
-        public Builder<T> IndexForArray<TValue>(T @object, Expression<Func<T, IEnumerable<TValue>>> expression)
+        public BitmapBuilder<T> IndexForArray<TValue>(T @object, Expression<Func<T, IEnumerable<TValue>>> expression)
         {
             var propertyName = From(expression);
             var func = expression.Compile();
@@ -115,7 +115,7 @@ namespace Crude.BitmapIndex.Implementations.Builder
         }
 
 
-        public Builder<T> ForData(IEnumerable<T> data)
+        public BitmapBuilder<T> ForData(IEnumerable<T> data)
         {
             _data = data;
             return this;

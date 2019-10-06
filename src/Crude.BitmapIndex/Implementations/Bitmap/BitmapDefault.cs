@@ -4,8 +4,8 @@ using System.Runtime.CompilerServices;
 using Crude.BitmapIndex.Helpers;
 using static Crude.BitmapIndex.Helpers.BitmapHelper;
 
-[assembly: InternalsVisibleTo("BitmapTests")]
-[assembly: InternalsVisibleTo("Crude.BitmapIndexBuilder")]
+[assembly: InternalsVisibleTo("Crude.BitmapTests")]
+[assembly: InternalsVisibleTo("Crude.BitmapBenchmarks")]
 
 namespace Crude.BitmapIndex.Implementations.Bitmap
 {
