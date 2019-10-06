@@ -1,7 +1,7 @@
 using System;
 using Crude.BitmapIndex.Helpers;
 
-namespace Crude.BitmapIndex
+namespace Crude.BitmapIndex.Implementations
 {
     public struct BitmapQuery<T>
     {

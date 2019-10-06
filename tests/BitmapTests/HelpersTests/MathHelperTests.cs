@@ -4,7 +4,7 @@ using Crude.BitmapIndex.Helpers;
 using FluentAssertions;
 using Xunit;
 
-namespace BitmapTests
+namespace BitmapTests.HelpersTests
 {
     public class MathHelperTests
     {
