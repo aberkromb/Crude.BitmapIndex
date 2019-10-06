@@ -5,6 +5,7 @@ using Crude.BitmapIndex.Helpers;
 using static Crude.BitmapIndex.Helpers.BitmapHelper;
 
 [assembly: InternalsVisibleTo("BitmapTests")]
+[assembly: InternalsVisibleTo("Crude.BitmapIndexBuilder")]
 
 namespace Crude.BitmapIndex.Implementations.Bitmap
 {

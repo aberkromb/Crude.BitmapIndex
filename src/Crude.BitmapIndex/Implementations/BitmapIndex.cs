@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using Crude.BitmapIndex.Models;
 
-namespace Crude.BitmapIndex
+namespace Crude.BitmapIndex.Implementations
 {
     public class BitmapIndex<T>
     {

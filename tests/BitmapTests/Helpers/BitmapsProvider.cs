@@ -2,7 +2,7 @@ using System;
 using System.Collections.Generic;
 using Crude.BitmapIndex.Implementations.Bitmap;
 
-namespace BitmapTests
+namespace BitmapTests.Helpers
 {
     public class BitmapsProvider
     {

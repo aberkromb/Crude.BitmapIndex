@@ -1,9 +1,10 @@
 using System;
+using BitmapTests.Helpers;
 using Crude.BitmapIndex;
 using FluentAssertions;
 using Xunit;
 
-namespace BitmapTests
+namespace BitmapTests.BitmapTests
 {
     public class BitmapTests
     {
