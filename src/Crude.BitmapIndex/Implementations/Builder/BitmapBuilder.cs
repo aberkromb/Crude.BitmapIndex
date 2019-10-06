@@ -9,13 +9,13 @@ namespace Crude.BitmapIndex.Implementations.Builder
 {
     public class BitmapBuilder<T>
     {
-        private readonly Dictionary<string, Func<T, bool>> _keys;
+        private readonly Dictionary<string, Predicate<T>> _keys;
         private Func<int, IBitmap> _bitMapFactory;
         private IEnumerable<T> _data;
 
         public BitmapBuilder()
         {
-            _keys = new Dictionary<string, Func<T, bool>>();
+            _keys = new Dictionary<string, Predicate<T>>();
         }
 
         public BitmapBuilder<T> WithBitMap(Func<int, IBitmap> constructor)
@@ -41,7 +41,7 @@ namespace Crude.BitmapIndex.Implementations.Builder
         }
 
 
-        public BitmapBuilder<T> IndexFor(string key, Func<T, bool> selector)
+        public BitmapBuilder<T> IndexFor(string key, Predicate<T> selector)
         {
             _keys.Add(key, selector);
             return this;

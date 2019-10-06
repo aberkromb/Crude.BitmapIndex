@@ -11,7 +11,7 @@ namespace Crude.BitmapIndex.Implementations
         private readonly List<T> _data;
 
 
-        public BitmapIndex(Dictionary<string, Func<T, bool>> keys,
+        public BitmapIndex(Dictionary<string, Predicate<T>> keys,
             IEnumerable<T> data,
             Func<int, IBitmap> bitMapFactory)
         {
