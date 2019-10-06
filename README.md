@@ -34,3 +34,7 @@ Intel Core i7-7500U CPU 2.70GHz (Kaby Lake), 1 CPU, 4 logical and 2 physical cor
 |    Avx2BitMap |    11.82 us |  0.0801 us |  0.0710 us | 5.9814 |     - |     - |   12560 B |
 
 ```
+
+# TODO
+- [ ] Add an item and update index
+- [ ] Delete an item and update index
