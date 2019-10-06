@@ -1,7 +1,10 @@
 using System;
 using System.Collections.Generic;
+using System.Runtime.CompilerServices;
 using Crude.BitmapIndex.Helpers;
 using static Crude.BitmapIndex.Helpers.BitmapHelper;
+
+[assembly: InternalsVisibleTo("BitmapTests")]
 
 namespace Crude.BitmapIndex.Implementations.Bitmap
 {
@@ -205,7 +208,7 @@ namespace Crude.BitmapIndex.Implementations.Bitmap
         }
 
         public object Clone() => new BitmapDefault(this);
-        
+
         public int CompareTo(IBitmap other) => Count.CompareTo(other.Count);
     }
 }
