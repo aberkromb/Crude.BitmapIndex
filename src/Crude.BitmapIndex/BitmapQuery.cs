@@ -9,7 +9,11 @@ namespace Crude.BitmapIndex
 
         private IBitmap _queryResultBitMap;
 
-        internal BitmapQuery(BitmapIndex<T> bitMapIndex) => _bitMapIndex = bitMapIndex;
+        internal BitmapQuery(BitmapIndex<T> bitMapIndex)
+        {
+            _bitMapIndex = bitMapIndex;
+            _queryResultBitMap = null;
+        }
 
 
         public BitmapQuery<T> Where(string key)

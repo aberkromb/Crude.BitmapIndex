@@ -5,16 +5,19 @@ using static Crude.BitmapIndex.Helpers.BitmapHelper;
 
 namespace Crude.BitmapIndex.Implementations.Bitmap
 {
-    internal sealed class DefaultBitmap : IBitmap
+    /// <summary>
+    ///     Default bitmap implementation
+    /// </summary>
+    internal sealed class BitmapDefault : IBitmap
     {
         private int _bitsCount = -1;
 
         private readonly long[] _mapArray;
         private readonly int _mapLength;
 
-        public DefaultBitmap(int length) : this(length, false) => _bitsCount = 0;
+        public BitmapDefault(int length) : this(length, false) => _bitsCount = 0;
 
-        public DefaultBitmap(int length, bool defaultValue)
+        public BitmapDefault(int length, bool defaultValue)
         {
             _mapArray = new long[GetArrayLength(length)];
             _mapLength = length;
@@ -24,14 +27,14 @@ namespace Crude.BitmapIndex.Implementations.Bitmap
             _bitsCount = defaultValue ? length : 0;
         }
 
-        public DefaultBitmap(long[] values)
+        public BitmapDefault(long[] values)
         {
             _mapArray = new long[values.Length];
             Array.Copy(values, 0, _mapArray, 0, values.Length);
             _mapLength = values.Length * BitsPerLong;
         }
 
-        public DefaultBitmap(DefaultBitmap bits)
+        public BitmapDefault(BitmapDefault bits)
         {
             var arrayLength = GetArrayLength(bits._mapLength);
             _mapArray = new long[arrayLength];
@@ -201,7 +204,7 @@ namespace Crude.BitmapIndex.Implementations.Bitmap
             return _bitsCount;
         }
 
-        public object Clone() => new DefaultBitmap(this);
+        public object Clone() => new BitmapDefault(this);
         
         public int CompareTo(IBitmap other) => Count.CompareTo(other.Count);
     }
