@@ -9,10 +9,8 @@ _bitmapIndex = new BitmapBuilder<Data>()
                 .IndexFor("ServerIsFrederik", data => data.Server.Equals("Frederik", StringComparison.Ordinal))
                 .IndexFor("ServerIsVickie", data => data.Server.Equals("Vickie", StringComparison.Ordinal))
                 .IndexFor("ApplicationIsTrantow", data => data.Application.Equals("Trantow", StringComparison.Ordinal))
-                
                 // constructor func for custom IBitmap implementations, default is BitmapDefault 
                 .WithBitMap(count => new BitmapDefault(count))
-                
                 // your IEnumerable<T> 
                 .ForData(_data) 
                 .Build();
