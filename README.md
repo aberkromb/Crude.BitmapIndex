@@ -18,7 +18,7 @@ _bitmapIndex = new BitmapBuilder<Data>()
                 .Build();
 ```
 
-#Benchmarks
+# Benchmarks
 ```
 BenchmarkDotNet=v0.11.5, OS=Windows 10.0.18362
 Intel Core i7-7500U CPU 2.70GHz (Kaby Lake), 1 CPU, 4 logical and 2 physical cores
