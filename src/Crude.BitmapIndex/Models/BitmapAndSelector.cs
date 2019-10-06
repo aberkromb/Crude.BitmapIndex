@@ -4,13 +4,13 @@ namespace Crude.BitmapIndex.Models
 {
     internal readonly struct BitmapAndSelector<T>
     {
-        public BitmapAndSelector(IBitmap bitMap, Func<T, bool> selector)
+        public BitmapAndSelector(IBitmap bitMap, Predicate<T> selector)
         {
             Bitmap = bitMap;
             Selector = selector;
         }
 
         public IBitmap Bitmap { get; }
-        public Func<T, bool> Selector { get; }
+        public Predicate<T> Selector { get; }
     }
 }
