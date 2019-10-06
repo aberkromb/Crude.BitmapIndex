@@ -3,7 +3,9 @@ using System.Collections.Generic;
 using System.Runtime.CompilerServices;
 using System.Runtime.Intrinsics;
 using System.Runtime.Intrinsics.X86;
+using Crude.BitmapIndex.Helpers;
 using static Crude.BitmapIndex.Helpers.BitmapHelper;
+
 
 namespace Crude.BitmapIndex.Implementations.Bitmap
 {
@@ -12,10 +14,6 @@ namespace Crude.BitmapIndex.Implementations.Bitmap
     /// </summary>
     internal sealed class BitmapAvx2 : IBitmap
     {
-        public long[] GetArray => _mapArray;
-        public int Count { get; }
-        public int Length => _mapLength;
-
         private readonly long[] _mapArray;
         private readonly int _mapLength;
 
@@ -54,6 +52,20 @@ namespace Crude.BitmapIndex.Implementations.Bitmap
 
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
         private static int CalculatePadding(int initialLen) => 4 - initialLen & (4 - 1);
+
+        public long[] GetArray => _mapArray;
+
+        public int Count
+        {
+            get
+            {
+                if (_bitsCount < 0)
+                    UpdateCountCache();
+                return _bitsCount;
+            }
+        }
+
+        public int Length => _mapLength;
 
         public bool this[int index]
         {
@@ -256,5 +268,15 @@ namespace Crude.BitmapIndex.Implementations.Bitmap
         public object Clone() => new BitmapAvx2(this);
 
         public int CompareTo(IBitmap other) => Count.CompareTo(other.Count);
+
+        private int UpdateCountCache()
+        {
+            _bitsCount = 0;
+            for (var i = 0; i < _mapArray.Length; i++)
+                if (_mapArray[i] != 0)
+                    _bitsCount += MathHelper.BitsCount((ulong) _mapArray[i]);
+
+            return _bitsCount;
+        }
     }
 }
