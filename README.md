@@ -1,5 +1,5 @@
 # Crude.BitmapIndex
-.NET bitmap index in memory implementation
+.NET bitmap in-memory index implementation
 
 # Example
 ```cs
