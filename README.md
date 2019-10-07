@@ -14,6 +14,13 @@ _bitmapIndex = new BitmapBuilder<Data>()
                 // your IEnumerable<T> 
                 .ForData(_data) 
                 .Build();
+                
+var query = _bitmapIndex.NewQuery
+                .Where("IsPersistent")
+                .And("ServerIsVickie")
+                .And("ApplicationIsTrantow");
+
+var result = query.Execute();
 ```
 
 # Benchmarks
