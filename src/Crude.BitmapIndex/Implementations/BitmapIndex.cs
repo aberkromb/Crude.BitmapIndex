@@ -19,7 +19,7 @@ namespace Crude.BitmapIndex.Implementations
             _bitMapFactory = bitMapFactory;
 
             foreach (var (key, predicate) in keys)
-                _bitMaps[key] = FillBitmap(_data, _bitMapFactory(_data.Count), predicate);
+                _bitMaps[key] = FillBitmap(_data, predicate);
         }
 
 
@@ -33,11 +33,12 @@ namespace Crude.BitmapIndex.Implementations
 
         public void AddKey(string keyName, Predicate<T> bitmapPredicate)
         {
-            FillBitmap(_data, _bitMapFactory(_data.Count), bitmapPredicate);
+            FillBitmap(_data, bitmapPredicate);
         }
 
-        private static IBitmap FillBitmap(List<T> data, IBitmap bitmap, Predicate<T> predicate)
+        private IBitmap FillBitmap(List<T> data, Predicate<T> predicate)
         {
+            var bitmap = _bitMapFactory(_data.Count);
             for (var i = 0; i < data.Count; i++)
             {
                 var d = data[i];
