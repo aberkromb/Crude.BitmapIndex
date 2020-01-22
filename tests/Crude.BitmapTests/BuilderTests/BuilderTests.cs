@@ -13,7 +13,7 @@ namespace BitmapTests.BuilderTests
         {
             // arrange
             var dto = TestModels.GetSimpleDto();
-            var builder = new BitmapBuilder<SimpleDto>();
+            var builder = new BitmapIndexBuilder<SimpleDto>();
 
             // act
             builder.IndexFor(dto, simpleDto => simpleDto.Integer);
@@ -34,7 +34,7 @@ namespace BitmapTests.BuilderTests
         {
             // arrange
             var dto = TestModels.GetDtoWithNestedDto();
-            var builder = new BitmapBuilder<DtoWithNestedDto>();
+            var builder = new BitmapIndexBuilder<DtoWithNestedDto>();
 
             // act
             builder.IndexFor(dto, simpleDto => simpleDto.Integer);
@@ -54,7 +54,7 @@ namespace BitmapTests.BuilderTests
         {
             // arrange
             var dto = TestModels.GetSimpleDto();
-            var builder = new BitmapBuilder<DtoWithNestedDto>();
+            var builder = new BitmapIndexBuilder<DtoWithNestedDto>();
 
             // act
             builder.IndexFor("testKey", simpleDto => simpleDto.NestedDto.Boolean);

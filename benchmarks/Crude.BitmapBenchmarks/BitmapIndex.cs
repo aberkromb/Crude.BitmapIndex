@@ -21,7 +21,7 @@ namespace Crude.BitmapBenchmarks
         {
             _data = Generator.CreateRandomData(_count);
 
-            _defaultBitMapIndex = new BitmapBuilder<MessageData>()
+            _defaultBitMapIndex = new BitmapIndexBuilder<MessageData>()
                 .IndexFor("IsPersistent", msg => msg.Persistent)
                 .IndexFor("ServerIsFrederik", msg => msg.Server.Equals("Frederik", StringComparison.Ordinal))
                 .IndexFor("ServerIsVickie", msg => msg.Server.Equals("Vickie", StringComparison.Ordinal))
@@ -30,7 +30,7 @@ namespace Crude.BitmapBenchmarks
                 .ForData(_data)
                 .Build();
 
-            _avx2BitMapIndex = new BitmapBuilder<MessageData>()
+            _avx2BitMapIndex = new BitmapIndexBuilder<MessageData>()
                 .IndexFor("IsPersistent", msg => msg.Persistent)
                 .IndexFor("ServerIsFrederik", msg => msg.Server.Equals("Frederik", StringComparison.Ordinal))
                 .IndexFor("ServerIsVickie", msg => msg.Server.Equals("Vickie", StringComparison.Ordinal))
