@@ -5,11 +5,11 @@ namespace Crude.BitmapIndex.Implementations
 {
     public struct BitmapQuery<T>
     {
-        private readonly BitmapIndex<T> _bitMapIndex;
+        private readonly IBitmapIndex<T> _bitMapIndex;
 
         private IBitmap _queryResultBitMap;
 
-        internal BitmapQuery(BitmapIndex<T> bitMapIndex)
+        internal BitmapQuery(IBitmapIndex<T> bitMapIndex)
         {
             _bitMapIndex = bitMapIndex;
             _queryResultBitMap = null;

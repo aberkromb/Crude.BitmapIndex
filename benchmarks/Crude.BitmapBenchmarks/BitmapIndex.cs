@@ -4,6 +4,7 @@ using BenchmarkDotNet.Attributes;
 using BitmapTests.Helpers;
 using Crude.BitmapIndex.Implementations;
 using Crude.BitmapIndex.Implementations.Bitmap;
+using Crude.BitmapIndex.Implementations.BitmapIndexes;
 using Crude.BitmapIndex.Implementations.Builder;
 
 namespace Crude.BitmapBenchmarks
@@ -13,8 +14,8 @@ namespace Crude.BitmapBenchmarks
     {
         private readonly int _count = 100_000;
         private List<MessageData> _data;
-        private BitmapIndex<MessageData> _defaultBitMapIndex;
-        private BitmapIndex<MessageData> _avx2BitMapIndex;
+        private DefaultBitmapIndex<MessageData> _defaultBitMapIndex;
+        private DefaultBitmapIndex<MessageData> _avx2BitMapIndex;
 
         [GlobalSetup]
         public void Setup()

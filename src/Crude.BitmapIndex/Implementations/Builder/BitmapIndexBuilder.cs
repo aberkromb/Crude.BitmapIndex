@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Linq.Expressions;
 using Crude.BitmapIndex.Implementations.Bitmap;
+using Crude.BitmapIndex.Implementations.BitmapIndexes;
 using static Crude.BitmapIndex.Helpers.PropertyNameHelper;
 
 namespace Crude.BitmapIndex.Implementations.Builder
@@ -122,11 +123,11 @@ namespace Crude.BitmapIndex.Implementations.Builder
         }
 
 
-        public BitmapIndex<T> Build()
+        public DefaultBitmapIndex<T> Build()
         {
             if (_data is null) throw new NullReferenceException("Data is not set");
 
-            return new BitmapIndex<T>(_keys, _data, _bitMapFactory ?? (i => new BitmapDefault(i)) );
+            return new DefaultBitmapIndex<T>(_keys, _data, _bitMapFactory ?? (i => new BitmapDefault(i)) );
         }
 
 

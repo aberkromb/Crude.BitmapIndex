@@ -2,15 +2,16 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 
-namespace Crude.BitmapIndex.Implementations
+namespace Crude.BitmapIndex.Implementations.BitmapIndexes
 {
-    public class BitmapIndex<T>
+    public class DefaultBitmapIndex<T> : IBitmapIndex<T>
     {
         private readonly Dictionary<string, IBitmap> _bitMaps;
         private readonly List<T> _data;
         private readonly Func<int, IBitmap> _bitMapFactory;
 
-        public BitmapIndex(Dictionary<string, Predicate<T>> keys,
+        public DefaultBitmapIndex(
+            Dictionary<string, Predicate<T>> keys,
             IEnumerable<T> data,
             Func<int, IBitmap> bitMapFactory)
         {
@@ -31,14 +32,13 @@ namespace Crude.BitmapIndex.Implementations
 
         public BitmapQuery<T> NewQuery => new BitmapQuery<T>(this);
 
-        public void AddKey(string keyName, Predicate<T> bitmapPredicate)
-        {
-            FillBitmap(_data, bitmapPredicate);
-        }
+        public void AddKey(string keyName, Predicate<T> bitmapPredicate) => 
+            _bitMaps[keyName] = FillBitmap(_data, bitmapPredicate);
 
-        private IBitmap FillBitmap(List<T> data, Predicate<T> predicate)
+        private IBitmap FillBitmap(IReadOnlyList<T> data, Predicate<T> predicate)
         {
             var bitmap = _bitMapFactory(_data.Count);
+            
             for (var i = 0; i < data.Count; i++)
             {
                 var d = data[i];
