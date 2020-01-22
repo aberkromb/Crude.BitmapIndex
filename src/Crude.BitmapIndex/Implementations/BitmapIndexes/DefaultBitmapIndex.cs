@@ -30,7 +30,7 @@ namespace Crude.BitmapIndex.Implementations.BitmapIndexes
 
         public int Count => _data.Count;
 
-        public BitmapQuery<T> NewQuery => new BitmapQuery<T>(this);
+        public NonInitializedBitmapQuery<T> NewQuery => new NonInitializedBitmapQuery<T>(this);
 
         public void AddKey(string keyName, Predicate<T> bitmapPredicate) => 
             _bitMaps[keyName] = FillBitmap(_data, bitmapPredicate);

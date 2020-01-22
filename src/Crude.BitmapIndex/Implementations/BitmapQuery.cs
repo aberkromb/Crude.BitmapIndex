@@ -3,25 +3,27 @@ using Crude.BitmapIndex.Helpers;
 
 namespace Crude.BitmapIndex.Implementations
 {
+    public struct NonInitializedBitmapQuery<T>
+    {
+        private readonly IBitmapIndex<T> _bitMapIndex;
+
+        internal NonInitializedBitmapQuery(IBitmapIndex<T> index) => _bitMapIndex = index;
+
+        public BitmapQuery<T> Where(string key) => 
+            new BitmapQuery<T>(_bitMapIndex, key);
+    }
+
     public struct BitmapQuery<T>
     {
         private readonly IBitmapIndex<T> _bitMapIndex;
 
-        private IBitmap _queryResultBitMap;
+        private readonly IBitmap _queryResultBitMap;
 
-        internal BitmapQuery(IBitmapIndex<T> bitMapIndex)
+        public BitmapQuery(IBitmapIndex<T> bitMapIndex, string key)
         {
             _bitMapIndex = bitMapIndex;
-            _queryResultBitMap = null;
+            _queryResultBitMap =  (IBitmap) _bitMapIndex[key].Clone();
         }
-
-
-        public BitmapQuery<T> Where(string key)
-        {
-            _queryResultBitMap = (IBitmap) _bitMapIndex[key].Clone();
-            return this;
-        }
-
 
         public BitmapQuery<T> And(string key)
         {
@@ -58,7 +60,7 @@ namespace Crude.BitmapIndex.Implementations
         }
 
         public bool Any(string key) => _queryResultBitMap.Any(_bitMapIndex[key]);
-        
+
         public bool All(string key) => _queryResultBitMap.All(_bitMapIndex[key]);
 
         public bool Contains(int i) => _queryResultBitMap.Contains(i);

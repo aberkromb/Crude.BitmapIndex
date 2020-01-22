@@ -8,7 +8,7 @@ namespace Crude.BitmapIndex
         IBitmap this[string key] { get; }
         T this[int i] { get; }
         int Count { get; }
-        BitmapQuery<T> NewQuery { get; }
+        NonInitializedBitmapQuery<T> NewQuery { get; }
         void AddKey(string keyName, Predicate<T> bitmapPredicate);
     }
 }
