@@ -15,6 +15,7 @@ namespace Crude.BitmapBenchmarks
         private readonly int _count = 100_000;
         private List<MessageData> _data;
         private DefaultBitmapIndex<MessageData> _defaultBitMapIndex;
+        private DefaultBitmapIndex<MessageData> _defaultBitMapIndexEx;
         private DefaultBitmapIndex<MessageData> _avx2BitMapIndex;
 
         [GlobalSetup]
@@ -28,6 +29,15 @@ namespace Crude.BitmapBenchmarks
                 .IndexFor("ServerIsVickie", msg => msg.Server.Equals("Vickie", StringComparison.Ordinal))
                 .IndexFor("ApplicationIsTrantow", msg => msg.Application.Equals("Trantow", StringComparison.Ordinal))
                 .WithBitMap(i => new BitmapDefault(i))
+                .ForData(_data)
+                .Build();
+            
+            _defaultBitMapIndexEx = new BitmapIndexBuilder<MessageData>()
+                .IndexFor("IsPersistent", msg => msg.Persistent)
+                .IndexFor("ServerIsFrederik", msg => msg.Server.Equals("Frederik", StringComparison.Ordinal))
+                .IndexFor("ServerIsVickie", msg => msg.Server.Equals("Vickie", StringComparison.Ordinal))
+                .IndexFor("ApplicationIsTrantow", msg => msg.Application.Equals("Trantow", StringComparison.Ordinal))
+                .WithBitMap(i => new BitmapDefaultEx(i))
                 .ForData(_data)
                 .Build();
 
@@ -65,8 +75,20 @@ namespace Crude.BitmapBenchmarks
 
             var result = query.Execute();
         }
+        
+        
+        [Benchmark]
+        public void DefaultBitMapEx()
+        {
+            var query = _defaultBitMapIndexEx.NewQuery
+                .Where("IsPersistent")
+                .And("ServerIsVickie")
+                .And("ApplicationIsTrantow");
 
+            var result = query.Execute();
+        }
 
+        
         [Benchmark]
         public void Avx2BitMap()
         {

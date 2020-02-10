@@ -12,6 +12,7 @@ namespace BitmapTests.Helpers
             {
                 yield return new object [] { (Func<int, BitmapDefault>)((count) => new BitmapDefault(count)) };
                 yield return new object [] { (Func<int, BitmapAvx2>)((count) => new BitmapAvx2(count)) };
+                yield return new object [] { (Func<int, BitmapDefaultEx>)((count) => new BitmapDefaultEx(count)) };
             }
         }
     }

@@ -15,7 +15,7 @@ namespace Crude.BitmapIndex.Implementations.BitmapIndexes
             IEnumerable<T> data,
             Func<int, IBitmap> bitMapFactory)
         {
-            _bitMaps = new Dictionary<string, IBitmap>(keys.Count);
+            _bitMaps = new Dictionary<string, IBitmap>(keys.Count, StringComparer.Ordinal);
             _data = data.ToList();
             _bitMapFactory = bitMapFactory;
 
@@ -28,12 +28,19 @@ namespace Crude.BitmapIndex.Implementations.BitmapIndexes
 
         public T this[int i] => _data[i];
 
-        public int Count => _data.Count;
+        public int DataCount => _data.Count;
 
-        public NonInitializedBitmapQuery<T> NewQuery => new NonInitializedBitmapQuery<T>(this);
+        public UnitializedBitmapQuery<T> NewQuery => new UnitializedBitmapQuery<T>(this);
 
-        public void AddKey(string keyName, Predicate<T> bitmapPredicate) => 
-            _bitMaps[keyName] = FillBitmap(_data, bitmapPredicate);
+        public void AddData(T item)
+        {
+            throw new NotImplementedException();
+        }
+
+        public void DeleteData(T item)
+        {
+            throw new NotImplementedException();
+        }
 
         private IBitmap FillBitmap(IReadOnlyList<T> data, Predicate<T> predicate)
         {

@@ -1,44 +1,31 @@
-using System;
+﻿using System;
 using System.Collections.Generic;
-using System.Runtime.CompilerServices;
 using Crude.BitmapIndex.Helpers;
 using static Crude.BitmapIndex.Helpers.BitmapHelper;
-
-[assembly: InternalsVisibleTo("Crude.BitmapTests")]
-[assembly: InternalsVisibleTo("Crude.BitmapBenchmarks")]
 
 namespace Crude.BitmapIndex.Implementations.Bitmap
 {
     /// <summary>
-    ///     Default bitmap implementation
+    ///     experimental implementation
     /// </summary>
-    internal sealed class BitmapDefault : IBitmap
+    internal sealed class BitmapDefaultEx : IBitmap
     {
-        private int _bitsCount = -1;
-
         private readonly long[] _mapArray;
         private readonly int _mapLength;
+        private int _bitsCount;
 
-        public BitmapDefault(int length) : this(length, false) =>
-            _bitsCount = 0;
-
-        public BitmapDefault(int length, bool defaultValue)
+        public BitmapDefaultEx(int length)
         {
             _mapArray = new long[GetArrayLength(length)];
             _mapLength = length;
-            if (defaultValue)
-                for (var i = 0; i < _mapArray.Length; i++)
-                    _mapArray[i] = -1L;
-            _bitsCount = defaultValue ? length : 0;
         }
 
-        public BitmapDefault(long[] values)
+        public BitmapDefaultEx(long[] values)
         {
             _mapArray = new long[values.Length];
             Array.Copy(values, 0, _mapArray, 0, values.Length);
             _mapLength = values.Length * BitsPerLong;
         }
-
 
         public int BitsCount
         {
@@ -50,57 +37,50 @@ namespace Crude.BitmapIndex.Implementations.Bitmap
             }
         }
 
+        private int UpdateCount()
+        {
+            var bitsCount = 0;
+
+            for (var i = 0; i < _mapArray.Length; i++)
+                if (_mapArray[i] != 0)
+                    bitsCount += MathHelper.BitsCount((ulong) _mapArray[i]);
+
+            _bitsCount = bitsCount;
+
+            return bitsCount;
+        }
+
+
+        public int Length => _mapLength;
+
         public bool this[int index]
         {
             get => Get(index);
             set => Set(index, value);
         }
 
-        public int Length => _mapLength;
-
-        public bool Contains(int index) => this[index];
-
-        // TODO fix it
-        public IEnumerable<int> Enumerate()
-        {
-            for (var word = 0; word < _mapArray.Length; word++)
-            {
-                var val = _mapArray[word];
-                if (val != 0)
-                    for (var bit = 0; bit < 64; bit++)
-                        if ((val & (1 << bit)) != 0)
-                            yield return _mapLength - ((word << 6) | bit);
-            }
-        }
-
         public bool Get(int index)
         {
-            index = _mapLength - index;
-            var (arrIndex, bit) = Div64Remainder(index);
-            return (_mapArray[arrIndex] & (1L << bit)) != 0;
+            var bitmapIndex = index / BitsPerLong;
+            var bit = index % BitsPerLong;
+            return (_mapArray[bitmapIndex] & (1L << bit)) != 0;
         }
 
         public void Set(int index, bool value)
         {
-            index = _mapLength - index;
-            var (arrIndex, bit) = Div64Remainder(index);
-            var newValue = _mapArray[arrIndex];
+            var bitmapIndex = index / BitsPerLong;
+            var bit = index % BitsPerLong;
+
+            var newValue = _mapArray[bitmapIndex];
+
             if (value)
                 newValue |= 1L << bit;
             else
                 newValue &= ~(1L << bit);
-            _mapArray[arrIndex] = newValue;
+
+            _mapArray[bitmapIndex] = newValue;
+
             _bitsCount = -1;
-        }
-
-        public long GetContainer(int index) => _mapArray[index];
-
-        public void SetAll(bool value)
-        {
-            var fillValue = value ? -1L : 0L;
-            for (var i = 0; i < _mapArray.Length; i++)
-                _mapArray[i] = fillValue;
-            _bitsCount = value ? _mapLength : 0;
         }
 
         public bool Any(IBitmap other)
@@ -185,24 +165,31 @@ namespace Crude.BitmapIndex.Implementations.Bitmap
             return this;
         }
 
-        public void CopyTo(Array array, int index)
+
+        public object Clone() => new BitmapDefaultEx(_mapArray);
+
+
+        public bool Contains(int index) => this[index];
+
+
+        public IEnumerable<int> Enumerate()
         {
-            if (array is long[] intArray)
-                Array.Copy(_mapArray, 0, intArray, index, _mapArray.Length);
+            throw new NotImplementedException();
         }
 
-        private int UpdateCount()
-        {
-            _bitsCount = 0;
-            for (var i = 0; i < _mapArray.Length; i++)
-                if (_mapArray[i] != 0)
-                    _bitsCount += MathHelper.BitsCount((ulong) _mapArray[i]);
 
-            return _bitsCount;
+        public long GetContainer(int index) =>
+            _mapArray[index];
+
+        public void SetAll(bool value)
+        {
+            throw new NotImplementedException();
         }
 
-        public object Clone() => new BitmapDefault(_mapArray);
 
-        public ReadOnlySpan<long> AsSpan() => _mapArray.AsSpan();
+        public ReadOnlySpan<long> AsSpan()
+        {
+            throw new NotImplementedException();
+        }
     }
 }

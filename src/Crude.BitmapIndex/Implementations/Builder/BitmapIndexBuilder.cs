@@ -42,9 +42,9 @@ namespace Crude.BitmapIndex.Implementations.Builder
         }
 
 
-        public BitmapIndexBuilder<T> IndexFor(string key, Predicate<T> selector)
+        public BitmapIndexBuilder<T> IndexFor(string key, Predicate<T> predicate)
         {
-            _keys.Add(key, selector);
+            _keys.Add(key, predicate);
             return this;
         }
 

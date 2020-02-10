@@ -3,11 +3,11 @@ using Crude.BitmapIndex.Helpers;
 
 namespace Crude.BitmapIndex.Implementations
 {
-    public struct NonInitializedBitmapQuery<T>
+    public struct UnitializedBitmapQuery<T>
     {
         private readonly IBitmapIndex<T> _bitMapIndex;
 
-        internal NonInitializedBitmapQuery(IBitmapIndex<T> index) => _bitMapIndex = index;
+        internal UnitializedBitmapQuery(IBitmapIndex<T> index) => _bitMapIndex = index;
 
         public BitmapQuery<T> Where(string key) => 
             new BitmapQuery<T>(_bitMapIndex, key);
@@ -67,10 +67,7 @@ namespace Crude.BitmapIndex.Implementations
 
         public T[] Execute()
         {
-            var bitsCount = 0;
-
-            for (var i = 0; i < _queryResultBitMap.GetArray.Length; i++)
-                bitsCount += MathHelper.BitsCount((ulong) _queryResultBitMap.GetArray[i]);
+            var bitsCount = _queryResultBitMap.BitsCount;
 
             if (bitsCount <= 0)
                 return Array.Empty<T>();
@@ -78,7 +75,7 @@ namespace Crude.BitmapIndex.Implementations
             var result = new T[bitsCount];
             var resultIndex = 0;
 
-            for (var i = 0; i < _bitMapIndex.Count; i++)
+            for (var i = 0; i < _bitMapIndex.DataCount; i++)
             {
                 if (_queryResultBitMap.Get(i))
                 {

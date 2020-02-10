@@ -1,4 +1,4 @@
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.Runtime.CompilerServices;
 using System.Runtime.Intrinsics;
@@ -6,24 +6,20 @@ using System.Runtime.Intrinsics.X86;
 using Crude.BitmapIndex.Helpers;
 using static Crude.BitmapIndex.Helpers.BitmapHelper;
 
-
 namespace Crude.BitmapIndex.Implementations.Bitmap
 {
-    /// <summary>
-    ///     Avx 2 bitmap implementation 
-    /// </summary>
-    internal sealed class BitmapAvx2 : IBitmap
+    internal sealed class BitmapConcurrentAvx2: IBitmap
     {
-        private readonly long[] _mapArray;
+       private readonly long[] _mapArray;
         private readonly int _mapLength;
 
         private const int VecSize = 4;
 
         private int _bitsCount = -1;
 
-        public BitmapAvx2(int length) : this(length, false) => _bitsCount = 0;
+        public BitmapConcurrentAvx2(int length) : this(length, false) => _bitsCount = 0;
 
-        public BitmapAvx2(int length, bool defaultValue)
+        public BitmapConcurrentAvx2(int length, bool defaultValue)
         {
             var alignedLength = GetArrayLength(length) + CalculatePadding(length);
 
@@ -35,14 +31,14 @@ namespace Crude.BitmapIndex.Implementations.Bitmap
             _bitsCount = defaultValue ? length : 0;
         }
 
-        public BitmapAvx2(long[] values)
+        public BitmapConcurrentAvx2(long[] values)
         {
             _mapArray = new long[values.Length + CalculatePadding(values.Length)];
             Array.Copy(values, 0, _mapArray, 0, values.Length);
             _mapLength = values.Length * BitsPerLong;
         }
 
-        public BitmapAvx2(IBitmap bits)
+        public BitmapConcurrentAvx2(IBitmap bits)
         {
             var alignedLength = GetArrayLength(bits.Length) + CalculatePadding(bits.Length);
             _mapArray = new long[alignedLength];
@@ -53,12 +49,14 @@ namespace Crude.BitmapIndex.Implementations.Bitmap
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
         private static int CalculatePadding(int initialLen) => 4 - initialLen & (4 - 1);
 
+        public long[] GetArray => _mapArray;
+
         public int BitsCount
         {
             get
             {
                 if (_bitsCount < 0)
-                    UpdateBitsCount();
+                    UpdateCountCache();
                 return _bitsCount;
             }
         }
@@ -262,11 +260,13 @@ namespace Crude.BitmapIndex.Implementations.Bitmap
             return this;
         }
 
+        public void CopyTo(Array array, int index) => Array.Copy(_mapArray, array, index);
+        
         public ReadOnlySpan<long> AsSpan() => _mapArray.AsSpan();
 
-        public object Clone() => new BitmapAvx2(_mapArray);
+        public object Clone() => new BitmapAvx2(this);
 
-        private int UpdateBitsCount()
+        private int UpdateCountCache()
         {
             _bitsCount = 0;
             for (var i = 0; i < _mapArray.Length; i++)
