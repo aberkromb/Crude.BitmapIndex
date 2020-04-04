@@ -40,7 +40,4 @@ Intel Core i7-7500U CPU 2.70GHz (Kaby Lake), 1 CPU, 4 logical and 2 physical cor
 
 ```
 
-# TODO
-- [ ] Add an item and update index
-- [ ] Delete an item and update index
-- [ ] Add key to index
+
